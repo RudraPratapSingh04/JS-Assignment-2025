@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Based Chat App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="side-bar">
+        <div class="model-selector">
+                    <select id="model-select">
+                        <option value="gryphe/mythomax-l2-13b">MythoMax-L2-13B</option>
+                        <option value="meta-llama/llama-2-13b-chat">Llama-2-13B-Chat</option>
+                        <option value="openchat/openchat-7b">OpenChat 7B</option>
+                        <option value="google/palm-2-chat-bison">PaLM 2 Chat Bison</option>
+                        <option value="anthropic/claude-2" default="selected">Claude 2</option>
+                    </select>
+                </div>
+        <div id="chatHistory"></div>
+        <button id="new-chat-btn">+ New Chat</button>
+    </div>
+    <div id="main-box">
+        <div id="top-bar">
+            <div style="font-size:40px"><strong>LLM Based Chat App</strong></div>
+            <div id="api-key">
+                <input type="password" id="api-key-input" placeholder="Enter Open Router API Key">
+                <button id="api-btn">Save</button>
+            </div>
+            
+        </div>
+        <div id="chat-box"></div>
+        <div id="bottom-bar">
+            <input id="type-box" type="text"placeholder="Type a message">
+            <button id="btn" class="btm-bar"><strong>Send</strong></button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

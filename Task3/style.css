@@ -1,0 +1,114 @@
+body{
+    background-color: #fef8dd;
+    overflow-x: hidden;
+}
+#item-list{
+    display:flex;
+    /* background-color: #fef8dd; */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap:1rem;
+    padding:0;
+    border:0;
+    margin:20px;
+    padding:1rem;
+    order:1px solid 
+}
+#topBar{
+    background-color: black;
+    height:50px;
+    padding: 0;
+    margin-bottom:10px;
+    margin-top:-10px;
+    margin-left: -10px;
+    color:white;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:1rem;
+    width:100vw;
+}
+
+#btn{
+    background-color: #f7d8ba;
+}
+
+#box{
+    color:white;
+}
+.catDiv{
+    background-color: white;
+    width:8vw;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+min-width:50px;
+height:40px;
+border-radius: 8px;
+padding:1px;
+min-width:fit-content;
+min-height: fit-content;
+
+}
+#category-list{
+    display: flex;
+    justify-content: center;
+    gap:5px;
+    flex-wrap: wrap;
+    /* min-width: 500px; */
+    margin:15px;
+    
+}
+#tag-list{
+
+       display: flex;
+        height:fit-content;
+        gap:1rem;
+   flex-wrap:wrap;
+    align-items: center;
+    justify-content: center;
+    width:fit-content;
+    margin: auto;
+    border-radius:8px;
+    
+}
+.tagDiv{
+    background-color: lightpink;
+    width:8vw;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+min-width:50px;
+height:40px;
+border-radius: 8px;
+padding:1px;
+min-width:fit-content;
+}
+.tagDiv:hover{
+    background-color: black;
+    color: white;
+
+}
+.selected{ 
+ background-color: black; 
+ color: white;
+ }
+ #catCon{
+    background-color: lightseagreen;
+        height:fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:fit-content;
+    margin: auto;
+    border-radius:8px;
+    
+ }
+ #okCom{
+    color:gold;
+ }
+ #cart{
+    /* background-color: pink; */
+    width:150px;
+ }
