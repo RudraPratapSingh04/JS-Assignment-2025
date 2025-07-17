@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+h1 {
+  text-align: center;
+  color: #00bfff;
+  margin-top: 0;
+  font-size: 1.6rem;
+}
+.mainBox {
+  background-color: white;
+  height: 80vh;
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("./Background\ Image.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#scoreBox {
+  background-color: #1f1f1f;
+  height: 5vh;
+  width: 70vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  padding: 0 1rem;
+  border-radius: 10px;
+  margin: 0 auto 10px;
+  box-shadow: 0 0 10px #00bfff55;
+}
+#ansBox {
+  width: 30vw;
+  background-color: #ecedb0;
+  height: 25px;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+#buttons {
+  font-size: 8px;
+  display: flex;
+  justify-content: space-around;
+  gap: 5vw;
+  height: 5vh;
+
+  width: 70vw;
+  margin-top: 15px;
+}
+.button {
+  background-color: pink;
+  width: 10vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 4vh;
+  border: 1px solid black;
+}
+#exit {
+  background-color: #ff4d4d;
+}
+#lowBtn {
+  background-color: #ffb347;
+}
+#highBtn {
+  background-color: #66ff99;
+}
+#skipBtn {
+  background-color: #00d2ff;
+}
+#openSpace {
+  height: 60vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+#wordDiv {
+  font-weight: bold;
+  font-size: 20px;
+}
+.gameOver {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 35px;
+}
+#score {
+  color: white;
+}
+#bestDiv {
+  color: white;
+}
