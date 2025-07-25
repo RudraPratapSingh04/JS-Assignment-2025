@@ -52,6 +52,7 @@ h1 {
   justify-content: space-around;
   gap: 5vw;
   height: 5vh;
+  
 
   width: 70vw;
   margin-top: 15px;
@@ -100,5 +101,9 @@ h1 {
   color: white;
 }
 #bestDiv {
+  color: white;
+}
+.selected{
+  background-color: black;
   color: white;
 }

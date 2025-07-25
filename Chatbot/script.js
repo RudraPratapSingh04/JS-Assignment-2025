@@ -7,13 +7,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const newChatButton = document.getElementById("new-chat-btn");
   const apiKeyInput = document.getElementById("api-key-input");
   const modelSelect = document.getElementById("model-select");
-
   let currentChatId = null;
   let isWaitingForResponse = false;
 
   loadApiKey();
   loadChatHistory();
   createNewChat();
+  function parseMarkdown(markdown) {
+    if (typeof markdown !== "string") return "";
+    return markdown
+      .replace(/^## (.*$)/g, "<h2>$1</h2>")
+      .replace(/^# (.*$)/g, "<h1>$1</h1>")
+      .replace(/\*(.*?)\*/g, "<b>$1</b>")
+      .replace(/\_(.*?)\_/g, "<i>$1</i>")
+      .replace(/\n/g, "<br>");
+  }
 
   messageInput.addEventListener("keydown", handleKeyDown);
 
@@ -72,19 +80,58 @@ document.addEventListener("DOMContentLoaded", function () {
         body: JSON.stringify({
           model: model,
           messages: messages,
+          stream: true, 
         }),
       }
     );
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.error?.message || "Failed to fetch response");
     }
 
-    const data = await response.json();
-    return data.choices[0].message.content;
-  }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let fullText = "";
+    let botMessageDiv = addMessageToChat("bot", "");
 
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split("\n");
+      buffer = lines.pop(); 
+  for (const line of lines) {
+        const trimmed = line.trim();
+
+        if (!trimmed || trimmed === "data: [DONE]") continue;
+
+        if (trimmed.startsWith("data: ")) {
+          const jsonStr = trimmed.slice("data: ".length);
+
+          try {
+            const json = JSON.parse(jsonStr);
+            const token = json.choices?.[0]?.delta?.content;
+            if (token) {
+              fullText += token;
+              botMessageDiv.querySelector("div:first-child").textContent =
+                fullText;
+              botMessageDiv.scrollIntoView({ behavior: "smooth" });
+            }
+          } catch (e) {
+            console.error("JSON parse error:", e, jsonStr);
+          }
+        }
+      }
+    }
+
+    saveMessageToCurrentChat("bot", fullText);
+    saveCurrentChat();
+  }
   function addMessageToChat(role, content) {
     if (!currentChatId) createNewChat();
 
@@ -93,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const contentDiv = document.createElement("div");
     contentDiv.textContent = content;
+    contentDiv.innerHTML = parseMarkdown(content);
 
     const metaDiv = document.createElement("div");
     metaDiv.className = "message-meta";
@@ -106,7 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    saveMessageToCurrentChat(role, content);
+    if (role !== "bot") saveMessageToCurrentChat(role, content);
+    return messageDiv;
   }
 
   function createNewChat() {
@@ -225,7 +274,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-
   function getChatMessages(chatId) {
     return new Promise((resolve) => {
       openDatabase()
@@ -242,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(() => resolve([]));
     });
   }
-
   function addChatToHistory(chatId, title) {
     const existingItem = document.querySelector(
       `.chat-item[data-chat-id="${chatId}"]`
@@ -260,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chatItem.addEventListener("click", () => loadChat(chatId));
     chatHistory.insertBefore(chatItem, chatHistory.firstChild);
   }
-
   function loadChatHistory() {
     openDatabase()
       .then((db) => {
@@ -290,7 +336,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("API key saved locally");
     }
   }
-
   function loadApiKey() {
     const savedKey = localStorage.getItem("openRouterApiKey");
     if (savedKey) {

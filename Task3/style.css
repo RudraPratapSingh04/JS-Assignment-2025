@@ -112,3 +112,14 @@ min-width:fit-content;
     /* background-color: pink; */
     width:150px;
  }
+ #pagination{
+    display:flex;
+    justify-content: center;
+    gap:5px;
+    margin-top:10px;
+    
+ }
+ .activePage{
+    background-color:black;
+    color:white
+ }

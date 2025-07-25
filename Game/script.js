@@ -4,14 +4,49 @@ let best = localStorage.getItem("bestScore")
   : 0;
 let skipChance = 3;
 let word = "";
-let fallSpeed = 0.4;
+let difficulty="";
+let fallSpeed=0;
+const easy=document.getElementById("easy");
+const medium=document.getElementById("medium");
+const hard=document.getElementById("hard");
+easy.addEventListener("click",()=>{
+  easy.classList.add("selected");
+  difficulty="easy";
+  medium.classList.remove("selected");
+  hard.classList.remove("selected");
+  fallSpeed=0.4;
+  medium.disabled=true;
+  hard.disabled=true;
+  startGame();
+  
+});
+medium.addEventListener("click", () => {
+  medium.classList.add("selected");
+  easy.classList.remove("selected");
+  difficulty = "medium";
+  hard.classList.remove("selected");
+  fallSpeed = 0.45;
+  easy.disabled = true;
+  hard.disabled = true;
+  startGame();
+});
+hard.addEventListener("click", () => {
+  hard.classList.add("selected");
+ difficulty = "hard";
+  medium.classList.remove("selected");
+  easy.classList.remove("selected");
+  fallSpeed = 0.5;
+  medium.disabled = true;
+  easy.disabled = true;
+  startGame();
+});
 let currentWordDiv = null;
 let animationFrameId = null;
 const exitBtn = document.getElementById("exit");
 const mainBox = document.getElementById("mainBox");
 const scoreBox = document.getElementById("scoreBox");
-const lowBtn = document.getElementById("lowBtn");
-const highBtn = document.getElementById("highBtn");
+// const lowBtn = document.getElementById("lowBtn");
+// const highBtn = document.getElementById("highBtn");
 const ansBox = document.getElementById("ansBox");
 const openSpace = document.getElementById("openSpace");
 const scoreDiv = document.getElementById("score");
@@ -33,7 +68,10 @@ skipBtn.addEventListener("click", () => {
     if (currentWordDiv && currentWordDiv.parentElement === openSpace) {
       openSpace.removeChild(currentWordDiv);
     }
+    console.log(fallSpeed);
+    fallSpeed += 0.04;
     startGame();
+    
     skipChance--;
   }
 });
@@ -43,13 +81,13 @@ const bestDiv = document.getElementById("bestDiv");
 bestDiv.innerText = `BEST : ${best}`;
 
 exitBtn.addEventListener("click", gameOver);
-lowBtn.addEventListener("click", () => {
-  if (fallSpeed > 0.2) fallSpeed -= 0.1;
-});
+// lowBtn.addEventListener("click", () => {
+//   if (fallSpeed > 0.2) fallSpeed -= 0.1;
+// });
 
-highBtn.addEventListener("click", () => {
-  if (fallSpeed < 1) fallSpeed += 0.1;
-});
+// highBtn.addEventListener("click", () => {
+//   if (fallSpeed < 1) fallSpeed += 0.1;
+// });
 
 ansBox.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
@@ -69,6 +107,8 @@ ansBox.addEventListener("keypress", (event) => {
         best = score;
         localStorage.setItem("bestScore", best);
       }
+      console.log(fallSpeed);
+      fallSpeed+=0.05;
       startGame();
     }
   }
@@ -80,7 +120,16 @@ function startGame() {
 }
 
 async function getWord() {
-  const url = "https://random-word-api.vercel.app/api?words=1";
+  // const url = "https://random-word-api.vercel.app/api?words=1";
+  if(difficulty==="easy"){
+ url = "https://random-word-api.herokuapp.com/word?length=6";
+  }
+  if (difficulty === "medium") {
+    url = "https://random-word-api.herokuapp.com/word?length=10";
+  }
+  if (difficulty === "hard") {
+    url = "https://random-word-api.herokuapp.com/word?length=15";
+  }
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
